@@ -6,8 +6,10 @@ namespace App\Calculator;
 
 use App\Calculator\Exceptions\NoOperandsException;
 
-final class Addition extends AbstractOperation implements Operation
+class Division extends AbstractOperation implements Operation
 {
+    protected $operands;
+
     /**
      * Addition constructor.
      */
@@ -21,6 +23,12 @@ final class Addition extends AbstractOperation implements Operation
             throw new NoOperandsException('No operands');
         }
 
-        return array_sum($this->operands);
+        return array_reduce(array_filter($this->operands), static function ($acc, $item) {
+            if ($item !== null && $acc !== null) {
+                return $acc / $item;
+            }
+
+            return $item;
+        }, null);
     }
 }

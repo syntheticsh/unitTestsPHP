@@ -14,4 +14,13 @@ class AdditionTest extends TestCase
 
         $this->assertEquals(3, $addition->calculate());
     }
+
+    /** @test */
+    public function noOperandsGivenThrowsOnCalculation()
+    {
+        $this->expectException(\App\Calculator\Exceptions\NoOperandsException::class);
+
+        $addition = new \App\Calculator\Addition();
+        $addition->calculate();
+    }
 }
