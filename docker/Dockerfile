@@ -20,5 +20,8 @@ RUN apt-get -y update \
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/*
 
+WORKDIR /root
+RUN composer require phpunit/phpunit ^8.3
+
 WORKDIR /app
-CMD ["/app/vendor/bin/phpunit"]
+CMD ["/root/vendor/bin/phpunit"]
