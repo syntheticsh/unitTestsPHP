@@ -1,12 +1,14 @@
 # PHPUnit Docker Container.
-FROM php:7.3-fpm-buster
+FROM php:7.4-fpm-buster
 
 RUN apt-get -y update \
     && apt-get -y install locales && echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen \
     && apt-get install -y curl \
-    && apt-get install -y libc-client-dev libkrb5-dev && docker-php-ext-configure imap --with-kerberos --with-imap-ssl && docker-php-ext-install imap \
-    && apt-get install -y libpng-dev libfreetype6-dev libjpeg62-turbo-dev && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install gd \
-    && apt-get install -y zlib1g-dev libzip-dev && docker-php-ext-install zip \
+    && docker-php-ext-install pdo_mysql mysqli pcntl sockets bcmath opcache \
+    && apt-get install -y libffi-dev && docker-php-ext-install ffi \
+    && apt-get install -y libc-client-dev libkrb5-dev && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl && docker-php-ext-install imap \
+    && apt-get install -y libpng-dev libfreetype6-dev libjpeg-dev libzip-dev && docker-php-ext-configure gd --with-freetype --with-jpeg && docker-php-ext-install gd \
+    && apt-get install -y zlib1g-dev && docker-php-ext-install zip \
     && pecl install apcu && docker-php-ext-enable apcu \
     && pecl install mongodb && docker-php-ext-enable mongodb \
     && apt-get install -y libmemcached-dev && pecl install memcached && docker-php-ext-enable memcached \
